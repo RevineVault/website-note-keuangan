@@ -1,0 +1,163 @@
+/* ==========================================================================
+   FINANCEVAULT - CALENDAR STYLESHEET
+   File: calendar.css
+   Deskripsi: Khusus menangani estetika dan responsivitas grid kalender,
+              lencana mutasi (hijau/merah), dan status hari.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. CALENDAR GRID & CELLS
+   -------------------------------------------------------------------------- */
+#calendar-grid {
+    /* Tailwind menangani grid dasar, kita tambahkan animasi transisi di sini */
+    transition: opacity 0.3s ease;
+}
+
+.cal-day {
+    position: relative;
+    border: 1px solid #f1f5f9; /* Tailwind slate-100 */
+    border-radius: 0.75rem; /* 12px */
+    padding: 0.5rem;
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #ffffff;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.cal-day:hover {
+    border-color: #cbd5e1; /* Tailwind slate-300 */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    transform: translateY(-2px);
+    z-index: 2;
+}
+
+.cal-day:active {
+    transform: translateY(0);
+}
+
+/* Tanggal angka di pojok kiri atas */
+.cal-date-num {
+    font-size: 0.875rem; /* 14px */
+    font-weight: 700;
+    color: #475569; /* Tailwind slate-600 */
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s;
+}
+
+/* --------------------------------------------------------------------------
+   2. DAY STATUSES (TODAY, MUTED, SELECTED)
+   -------------------------------------------------------------------------- */
+/* Hari dari bulan sebelumnya / sesudahnya */
+.cal-day.muted {
+    background-color: rgba(248, 250, 252, 0.5); /* Slate 50 transparan */
+    border-color: transparent;
+}
+.cal-day.muted .cal-date-num {
+    color: #cbd5e1; /* Tailwind slate-300 */
+    font-weight: 500;
+}
+
+/* Hari ini (Today Highlight) */
+.cal-day.today {
+    border-color: #93c5fd; /* Tailwind blue-300 */
+    background-color: #f0f9ff; /* Tailwind sky-50 */
+    box-shadow: 0 0 0 1px #93c5fd inset;
+}
+.cal-day.today .cal-date-num {
+    background-color: #2563eb; /* Tailwind blue-600 */
+    color: #ffffff;
+}
+
+/* Jika hari ini tapi bulan lain (jarang terjadi tapi buat jaga-jaga) */
+.cal-day.today.muted .cal-date-num {
+    background-color: #94a3b8;
+}
+
+/* --------------------------------------------------------------------------
+   3. MUTATION BADGES (PEMASUKAN / PENGELUARAN)
+   -------------------------------------------------------------------------- */
+.cal-mutations {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem; /* 4px */
+    width: 100%;
+    align-items: flex-end; /* Rata kanan */
+    margin-top: auto; /* Dorong ke bawah */
+}
+
+/* Badge dasar */
+.mut-badge {
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 0.15rem 0.35rem;
+    border-radius: 0.25rem;
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.2;
+    text-align: right;
+    letter-spacing: -0.02em;
+}
+
+/* Hijau untuk Pemasukan */
+.mut-income {
+    color: #059669; /* Tailwind emerald-600 */
+    background-color: #d1fae5; /* Tailwind emerald-100 */
+    border: 1px solid #a7f3d0;
+}
+
+/* Merah untuk Pengeluaran */
+.mut-expense {
+    color: #e11d48; /* Tailwind rose-600 */
+    background-color: #ffe4e6; /* Tailwind rose-100 */
+    border: 1px solid #fecdd3;
+}
+
+/* --------------------------------------------------------------------------
+   4. MOBILE RESPONSIVENESS
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+    .cal-day {
+        min-height: 65px;
+        padding: 0.25rem;
+        border-radius: 0.5rem;
+    }
+    
+    .cal-date-num {
+        font-size: 0.75rem;
+        width: 22px;
+        height: 22px;
+    }
+    
+    .cal-mutations {
+        gap: 0.15rem;
+    }
+    
+    .mut-badge {
+        font-size: 0.55rem;
+        padding: 0.1rem 0.2rem;
+        border-radius: 0.15rem;
+    }
+
+    /* Di HP, kita bisa menghilangkan teks dan hanya menampilkan titik jika terlalu sempit, 
+       tapi untuk aplikasi keuangan angka lebih penting. Kita kecilkan saja. */
+}
+
+/* Jika layar sangat kecil (iPhone SE, dsb) */
+@media (max-width: 380px) {
+    .mut-badge {
+        /* Hilangkan 'Rp' di layar sangat kecil melalui manipulasi teks di JS nanti, 
+           tapi secara CSS kita set ini */
+        letter-spacing: -0.05em;
+    }
+}

@@ -1,0 +1,133 @@
+/* ==========================================================================
+   FINANCEVAULT - NUMPAD STYLESHEET
+   File: numpad.css
+   Deskripsi: Khusus menangani gaya, efek sentuhan (tactile feedback), 
+              dan responsivitas tombol kalkulator transaksi.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. BASE BUTTON STYLES & TACTILE FEEDBACK
+   -------------------------------------------------------------------------- */
+.numpad-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation; /* Mencegah zoom saat double tap cepat di HP */
+    position: relative;
+    overflow: hidden;
+}
+
+/* Efek tombol ditekan (Tactile / Mechanical feel) */
+.numpad-btn:active {
+    transform: translateY(2px);
+    /* Menghilangkan shadow bawah saat ditekan agar terasa seperti tombol fisik */
+    box-shadow: 0 0px 0px rgba(0,0,0,0) !important;
+    filter: brightness(0.95);
+}
+
+/* Efek ripple ringan (opsional, menggunakan pseudo-element) */
+.numpad-btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.numpad-btn:active::after {
+    transform: translate(-50%, -50%) scale(2);
+    opacity: 1;
+    transition: 0s;
+}
+
+/* --------------------------------------------------------------------------
+   2. SPECIFIC BUTTON BEHAVIORS
+   -------------------------------------------------------------------------- */
+/* Tombol Aksi (Hari Ini, dsb) */
+.action-btn {
+    letter-spacing: -0.02em;
+}
+
+/* Container display angka (Rp xxx) */
+#calc-display-container {
+    transition: background-color 0.3s ease;
+}
+
+/* Transisi angka di layar kalkulator agar tidak kaku saat berubah drastis */
+#calc-display {
+    transition: color 0.2s ease, transform 0.1s ease;
+}
+
+/* Animasi denyut kecil saat angka bertambah/berkurang */
+.pulse-text {
+    animation: textPulse 0.15s ease-out;
+}
+
+@keyframes textPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* --------------------------------------------------------------------------
+   3. TAB SWITCHER (PENGELUARAN / PEMASUKAN / TRANSFER)
+   -------------------------------------------------------------------------- */
+/* Efek transisi untuk tab tipe transaksi di bagian atas modal */
+.tx-type-tab {
+    transition: all 0.2s ease;
+}
+.tx-type-tab.active-expense {
+    background-color: #ffffff;
+    color: #e11d48; /* rose-600 */
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    font-weight: 700;
+}
+.tx-type-tab.active-income {
+    background-color: #ffffff;
+    color: #059669; /* emerald-600 */
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    font-weight: 700;
+}
+.tx-type-tab.active-transfer {
+    background-color: #ffffff;
+    color: #2563eb; /* blue-600 */
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    font-weight: 700;
+}
+
+/* --------------------------------------------------------------------------
+   4. DYNAMIC THEME (BERDASARKAN TIPE TRANSAKSI)
+   -------------------------------------------------------------------------- */
+/* Jika tab Pemasukan dipilih, ubah nuansa display kalkulator jadi hijau */
+.theme-income #calc-display-container {
+    background: linear-gradient(to right, #ecfdf5, #d1fae5); /* emerald 50 to 100 */
+    border-color: #a7f3d0; /* emerald 200 */
+}
+.theme-income #calc-display, .theme-income #calc-display-container span {
+    color: #059669; /* emerald 600 */
+}
+.theme-income #calc-display-label {
+    color: #34d399; /* emerald 400 */
+}
+
+/* Jika tab Transfer dipilih, ubah nuansa jadi biru */
+.theme-transfer #calc-display-container {
+    background: linear-gradient(to right, #eff6ff, #dbeafe); /* blue 50 to 100 */
+    border-color: #bfdbfe; /* blue 200 */
+}
+.theme-transfer #calc-display, .theme-transfer #calc-display-container span {
+    color: #2563eb; /* blue 600 */
+}
+.theme-transfer #calc-display-label {
+    color: #60a5fa; /* blue 400 */
+}
